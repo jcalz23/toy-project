@@ -6,7 +6,8 @@ A simple FarmVille-style game built with Pygame. This project is designed as a s
 
 - Grid-based map system (20x15 tiles at 32x32 pixels each)
 - Player movement using arrow keys
-- Simple tile rendering (grass)
+- Simple tile rendering (grass and tilled soil)
+- Farm tile system (tilling soil)
 - Basic game loop
 
 ## How to Run
@@ -18,6 +19,7 @@ A simple FarmVille-style game built with Pygame. This project is designed as a s
 ## Controls
 
 - Arrow keys: Move player character
+- Spacebar: Till soil at the player's current position
 
 ## Project Structure
 
@@ -26,7 +28,7 @@ A simple FarmVille-style game built with Pygame. This project is designed as a s
 ## Development Roadmap
 
 - [x] Basic grid and player movement
-- [ ] Farm tile system (tilling)
+- [x] Farm tile system (tilling)
 - [ ] Planting and growing crops
 - [ ] Watering system
 - [ ] Harvesting
@@ -42,6 +44,7 @@ The game uses these key concepts:
 - **Grid System**: Using a 2D array to track the state of each tile
 - **Event Handling**: Capturing and responding to user input
 - **Rendering**: Drawing game objects to the screen in the correct order
+- **Tile System**: Different types of tiles (grass, tilled soil) with different visual appearances and functionality
 
 Future improvements will add proper sprite handling and more sophisticated game state management.
 

@@ -24,9 +24,14 @@ def init_constants():
         "GREEN": (0, 255, 0),
         "BROWN": (139, 69, 19),
         "BLUE": (0, 0, 255),
+        "DARK_BROWN": (90, 50, 10),
         
         # Frame rate
-        "FPS": 60
+        "FPS": 60,
+        
+        # Tile types
+        "GRASS": 0,
+        "TILLED_SOIL": 1
     }
     
     # Derived constants
@@ -48,8 +53,8 @@ def init_game(constants):
     # Clock for controlling frame rate
     clock = pygame.time.Clock()
     
-    # Create a simple map (0 = grass, 1 = dirt)
-    game_map = [[0 for _ in range(constants["GRID_WIDTH"])] for _ in range(constants["GRID_HEIGHT"])]
+    # Create a simple map (0 = grass, 1 = tilled soil)
+    game_map = [[constants["GRASS"] for _ in range(constants["GRID_WIDTH"])] for _ in range(constants["GRID_HEIGHT"])]
     
     # Player settings
     player = {
@@ -61,7 +66,7 @@ def init_game(constants):
     return screen, clock, game_map, player
 
 
-def handle_events(player, constants):
+def handle_events(player, constants, game_map):
     """Handle game events and return whether the game should continue running."""
     for event in pygame.event.get():
         # Handle quitting the game
@@ -70,9 +75,24 @@ def handle_events(player, constants):
             
         # Handle key presses
         elif event.type == pygame.KEYDOWN:
+            # Player movement
             handle_player_movement(event.key, player, constants)
             
+            # Till soil with spacebar
+            if event.key == pygame.K_SPACE:
+                till_soil(player, game_map, constants)
+            
     return True
+
+
+def till_soil(player, game_map, constants):
+    """Till the soil at the player's current position."""
+    x, y = player["pos"]
+    
+    # Only till if the tile is grass (not already tilled)
+    if game_map[y][x] == constants["GRASS"]:
+        game_map[y][x] = constants["TILLED_SOIL"]
+        print(f"Tilled soil at position: {player['pos']}")
 
 
 def handle_player_movement(key, player, constants):
@@ -102,11 +122,11 @@ def draw_map(screen, game_map, constants):
                 constants["TILE_SIZE"]
             )
             
-            # Draw the tile
-            if game_map[y][x] == 0:  # Grass
+            # Draw the tile based on its type
+            if game_map[y][x] == constants["GRASS"]:  # Grass
                 pygame.draw.rect(screen, constants["GREEN"], rect)
-            else:  # Dirt
-                pygame.draw.rect(screen, constants["BROWN"], rect)
+            elif game_map[y][x] == constants["TILLED_SOIL"]:  # Tilled soil
+                pygame.draw.rect(screen, constants["DARK_BROWN"], rect)
                 
             # Draw grid lines
             pygame.draw.rect(screen, constants["BLACK"], rect, 1)
@@ -142,7 +162,7 @@ def game_loop(screen, clock, game_map, player, constants):
     
     while game_running:
         # Handle events
-        game_running = handle_events(player, constants)
+        game_running = handle_events(player, constants, game_map)
         
         # Render the game
         render(screen, game_map, player, constants)
