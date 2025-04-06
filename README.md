@@ -45,7 +45,6 @@ The game uses these key concepts:
 
 Future improvements will add proper sprite handling and more sophisticated game state management.
 
-
 # Vibe Coding Strategy
 - Voice to code many new features
 - Over time... it will get messy and bloated
